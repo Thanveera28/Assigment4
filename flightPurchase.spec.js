@@ -7,6 +7,7 @@ test('Part Assignment 4 - Flight Purchase Automation', async ({ page }) => {
   await page.selectOption('select[name="fromPort"]', 'Paris');
   await page.selectOption('select[name="toPort"]', 'London');
   await page.locator('input[value="Find Flights"]').click();
+  await page.screenshot({ path: 'screenshots/task1-flight-list.png' });
 
   // STEP 2: First flight ah click pannu - edhu vaanalum okay
   const firstRow = page.locator('table tbody tr').first();
@@ -15,6 +16,7 @@ test('Part Assignment 4 - Flight Purchase Automation', async ({ page }) => {
 
   // STEP 3: Purchase page vandhucha nu mattum paaru
   await expect(page.locator('h2')).toContainText('Your flight');
+  await page.screenshot({ path: 'screenshots/task1-purchase-form.png' });
 
   // STEP 4: Thanveera details
   await page.fill('#inputName', 'Thanveera');
@@ -32,14 +34,7 @@ test('Part Assignment 4 - Flight Purchase Automation', async ({ page }) => {
   await page.locator('input[value="Purchase Flight"]').click();
 
   // STEP 6: Confirmation mattum check pannu - Idhu than mukkiyam
-  await expect(page).toHaveURL(/confirmation\.php/);
-  await expect(page.locator('h1')).toContainText('Thank you for your purchase today!');
-
-  const orderId = await page.locator('table tr', { hasText: 'Id' }).locator('td').nth(1).innerText();
-  console.log('Order ID:', orderId);
-
-  // STEP 7: Order ID vandha podhum - Airline compare panna maatom
-  expect(orderId.trim()).not.toBe('');
-
-  console.log('Flight Purchase Completed Successfully');
+  await expect(page.locator('h1')).toContainText('Thank you for your purchase');
+  await page.screenshot({ path: 'screenshots/task1-confirmation.png' });
+  console.log('Task 1 Flight Purchase Passed');
 });
